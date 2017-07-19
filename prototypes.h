@@ -24,14 +24,15 @@ void	_runGame();
 void	_initMap();
 void	_buildMap();
 
-inline void		_init();
 inline void		_win();
+inline void		_init();
 inline void		_die(char);
 inline bool	    _enemyNearby();
 inline void	    _mobCollision();
 inline void		_resizeConsole();
 inline void		_repositionConsole();
 inline void	    _gotoxy(short, short);
+inline bool     _exists(const string&);
 
 /* Function Prototypes endregion */
 
