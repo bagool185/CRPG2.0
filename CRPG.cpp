@@ -36,10 +36,10 @@ int main(void)
 
 	cout << "Legend:\n\n";
 	cout << "\t~~~ = water (If you happen to touch it, you'll drown) \n\t";
-	cout << (char)BRIDGE << (char)BRIDGE << (char)BRIDGE << " = bridge\n\t";
-	cout << (char)GRASS << (char)GRASS << (char)GRASS << " = grass\n\n\t";
-	cout << (char)FENCE << (char)FENCE << (char)FENCE << " = fence\n\n\t";
-	cout << (char)MOBS << " = mobs (You can pass through them, but you'll lose 20 health)\n\n\n";
+	cout << (char)BRIDGE << (char)BRIDGE  << (char)BRIDGE << " = bridge\n\t";
+	cout << (char)GRASS  << (char)GRASS   << (char)GRASS  << " = grass\n\n\t";
+	cout << (char)FENCE  << (char)FENCE   << (char)FENCE  << " = fence\n\n\t";
+	cout << (char)MOBS   << " = mobs (You can pass through them, but you'll lose 20 health)\n\n\n";
 
 	SetConsoleTextAttribute(hColor, 185);
 	cout << "Press any key to begin. Have fun!";
@@ -64,10 +64,13 @@ int main(void)
 
 inline void	    _gotoxy(short x, short y)		// sets the cursor to the coordinates x, y	
 {
-	
-
 	COORD p = { x, y };
 	SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), p);
+}
+
+inline bool     _exists(const string& name) {
+	struct stat buffer;
+	return (stat(name.c_str(), &buffer) == 0);
 }
 
 inline void		_repositionConsole()			// repositions the console depending on desktop's size
@@ -83,8 +86,8 @@ inline void		_repositionConsole()			// repositions the console depending on desk
 
 	GetWindowRect(hDesktop, &desktop);
 
-	horizontalRes = desktop.right  / 2 - WIDTH -  300;
-	verticalRes   = desktop.bottom / 2 + HEIGHT - 200;
+	horizontalRes = desktop.right / 2 - WIDTH - 300;
+	verticalRes = desktop.bottom / 2 + HEIGHT - 200;
 
 	SetWindowPos(consoleWindow, 0, horizontalRes, verticalRes, 0, 0, SWP_NOSIZE | SWP_NOZORDER);
 }
@@ -128,7 +131,7 @@ inline void		_die(char how)
 {
 	CLEAR_SCREEN
 
-		isRunning = false;
+	isRunning = false;
 
 	system("COLOR 0C");		// sets the background black and the foreground red
 
@@ -157,14 +160,13 @@ inline void		_die(char how)
 inline void		_hideCaret()
 {
 	// prevents the Caret from blinking so it won't distors the image
-
 	CONSOLE_CURSOR_INFO cursor = { 1, FALSE };
 	SetConsoleCursorInfo(GetStdHandle(STD_OUTPUT_HANDLE), &cursor);
 }
 
 inline void		_init()			// initializes the game
 {
-	SetConsoleTitle(_T("CRPG powered by AIB Inc.™"));
+	SetConsoleTitle(_T("CRPG powered by AIB Inc.â„¢"));
 	_repositionConsole();
 	_resizeConsole();
 	_hideCaret();
@@ -176,7 +178,7 @@ inline void		_win()
 {
 	CLEAR_SCREEN
 
-		isRunning = false;		// stops the execution of the loop
+	isRunning = false;		// stops the execution of the loop
 
 	system("COLOR 2F");		// sets the background green and the foreground white		
 	cout << "Congratulations! You won!\n";
@@ -212,19 +214,30 @@ void	_buildMap()
 {
 	string	line;
 
-	ifstream mapReader("firstLevel.map");
-
-	while (getline(mapReader, line))		// read the map, line by line
+	if (exists("firstLevel.map"))
 	{
-		tempMap.push_back(line);
-	}
+		ifstream mapReader("firstLevel.map");
 
-	mapReader.close();
+		while (getline(mapReader, line))		// read the map, line by line
+		{
+			tempMap.push_back(line);
+		}
+
+		mapReader.close();
+	}
+	else
+	{
+		CLEAR_SCREEN
+		cout << "The map file is not in the same directory with the .exe. Please provide it in order to play";
+		system("pause > nul");
+	}	
 }
 
 void	_initMap()
 {
 	_buildMap();
+
+	Map = tempMap;
 
 	for (short h = 0; h < HEIGHT; h++)		// replaces every single character from the extended ASCII table
 	{
@@ -239,9 +252,7 @@ void	_initMap()
 			case 'w': MapHW = WATER;  break;
 			case 'b':
 				MapHW = BRIDGE;
-
 				isBridge[h][w] = true;
-
 				break;
 			case 's': MapHW = SNOW;   break;
 			case 'm': MapHW = MOBS;   break;
@@ -259,7 +270,7 @@ void	_runGame()
 
 	Map = tempMap;		// rebuild the map
 
-	health    = 100;
+	health = 100;
 	gameSpeed = 16.66;
 
 	pX = 1;
@@ -364,7 +375,7 @@ void	_runGame()
 						break;
 
 					case MOBS:									// if the player bumps into a mob, then the mob will disappear, but at the cost of losing 20 health
-						
+
 						_mobCollision();
 
 						if (health == 0)
@@ -422,7 +433,7 @@ void	_runGame()
 							break;
 
 						case MOBS:
-							
+
 							_mobCollision();
 
 							if (health == 0)
@@ -477,9 +488,9 @@ void	_runGame()
 								break;
 
 							case MOBS:
-								
+
 								_mobCollision();
-							
+
 								if (health == 0)
 								{
 									_die('k');
@@ -529,7 +540,7 @@ void	_runGame()
 									break;
 
 								case MOBS:
-									
+
 									_mobCollision();
 
 									if (health == 0)
@@ -554,7 +565,7 @@ void	_runGame()
 
 #pragma endregion
 
-							Sleep(gameSpeed);
+						Sleep(gameSpeed);
 		}
 
 	if (res == 'r')
