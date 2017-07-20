@@ -75,7 +75,7 @@
 // plays button-48.wav
 #define BEEP_POINT	 PlaySound(MAKEINTRESOURCE(IDR_WAVE1),GetModuleHandle(0),SND_RESOURCE|SND_ASYNC);	
 // plays beep-03.wav
-#define BEEP_ENEMY   PlaySound(MAKEINTRESOURCE(IDR_WAVE2),GetModuleHandle(0),SND_RESOURCE|SND_ASYNC);   // plays beep-03.wav
+#define BEEP_ENEMY   PlaySound(MAKEINTRESOURCE(IDR_WAVE2),GetModuleHandle(0),SND_RESOURCE|SND_ASYNC); 
 
 /* Sounds endregion */
 #pragma endregion
