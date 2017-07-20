@@ -1,55 +1,54 @@
 #pragma region Player-related Globals
-/* crtPos variables will be used later on in moving */
+short HEIGHT;
+short WIDTH;
 
-short	 crtPosX = 1;
-short    crtPosY = HEIGHT - 2;
+/* crtPos variables will be used later on for moving */
+short crtPosX;
+short crtPosY;
 
-float    gameSpeed = 16.66;
+float gameSpeed = 16.66;
 
-short	 health;
+short health;
 
-short	 threatsEliminated;
-short	 score;
+short threatsEliminated;
+short score;
 
 unsigned int	seconds;
 
 /* Player-related Globals endregion */
-
 #pragma endregion
 
 #pragma region Function Prototypes
 /* function prototypes */
 
-void	_runGame();
-void	_initMap();
-void	_buildMap();
+void runGame();
+void initMap();
+void buildMap();
 
-inline void		_win();
-inline void		_init();
-inline void		_die(char);
-inline bool	    _enemyNearby();
-inline void	    _mobCollision();
-inline void		_resizeConsole();
-inline void		_repositionConsole();
-inline void	    _gotoxy(short, short);
-inline bool     _exists(const string&);
+inline void	win();
+inline void	init();
+inline void	die(char);
+inline bool	enemyNearby();
+inline void	mobCollision();
+inline void	resizeConsole();
+inline void	repositionConsole();
+inline void	gotoxy(short, short);
+inline bool exists(const std::string&);
 
 /* Function Prototypes endregion */
-
 #pragma endregion
 
 #pragma region Game Globals
+/* as the program runs in an infinite loop, we need a trigger to stop it.
+In other words, it works as long isRunning is true */
+bool isRunning;
 
-/* as the program runs in an infinite loop, we need a trigger to stop it. In other words, it works as long isRunning is true */
+// get the time when the program started in order to build a timer
+unsigned int start;	
 
-bool	 isRunning;
-
-unsigned int	start;	// get the time when the program started in order to build a timer
-
-char	res;
+char res;
 
 /* Game Globals endregion  */
-
 #pragma endregion
 
 #pragma region Map Globals
@@ -58,7 +57,7 @@ char	res;
 std::vector < std::string > Map;
 std::vector < std::string > tempMap;
 
-bool	isBridge[HEIGHT][WIDTH];
+bool **isBridge;
 
 /* Map Globals endregion */
 #pragma endregion
